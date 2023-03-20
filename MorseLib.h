@@ -1,7 +1,11 @@
-class Morse {
+class Morse
+{
 	public:
-	    Morse();
+		Morse(int num);
+		char getCode(int index);
+		int getWpm();
 
 	private:
-		char morseCode[36];
+		int wpm;
+		char morse_code[36];
 };
