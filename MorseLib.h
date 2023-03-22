@@ -1,11 +1,17 @@
+#ifndef MorseLib
+#define MorseLib
+
+#include <Arduino.h>
+
 class Morse
 {
-	public:
-		Morse(int num);
-		char getCode(int index);
-		int getWpm();
-
-	private:
-		int wpm;
-		char morse_code[36];
+public:
+	Morse(int wordsPerMinute);
+	int getWpm();
+	
+private:
+	int wpm;
+	char morse_code[36];
 };
+
+#endif
