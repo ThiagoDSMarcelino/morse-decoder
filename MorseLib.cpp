@@ -1,17 +1,43 @@
 #include "MorseLib.h"
 
-Morse::Morse(int wordsPerMinute)
+/*!
+ *  @brief Instantiates a new Morse class
+ *  @param wpm
+ *         Words per minutes you can click
+ */
+Morse::Morse(int wpm)
 {
-    wpm = wordsPerMinute;
+    if (wpm < 1)
+        throw "Invalid value for words per minute";
+    _wpm = wpm;
 }
 
+int _index = 0;
+
+/*!
+ *  @brief Get the defined words per minute
+ */
 int Morse::getWpm()
 {
-    return wpm;
+    return _wpm;
 }
 
-char morse_code[36] = {
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-    'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3',
-    '4', '5', '6', '7', '8', '9'};
+/*!
+ *  @brief Set a new words per minute
+ *  @param wpm
+ *         Words per minutes you can click
+ */
+void Morse::setWpm(int wpm)
+{
+    if (wpm < 1)
+        throw "Invalid value for words per minute";
+    _wpm = wpm;
+}
+
+/*!
+ *  @brief Reset the array of decoded words
+ */
+void Morse::clear()
+{
+    _index = 0;
+}
