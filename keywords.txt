@@ -1,0 +1,4 @@
+MorseDecoder   KEYWORD1
+getWpm  KEYWORD2
+setWpm  KEYWORD2
+clear   KEYWORD2
