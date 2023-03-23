@@ -2,3 +2,5 @@ MorseDecoder   KEYWORD1
 getWpm  KEYWORD2
 setWpm  KEYWORD2
 clear   KEYWORD2
+read    KEYWORD2
+getData KEYWORD2

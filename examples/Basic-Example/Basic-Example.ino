@@ -1,11 +1,13 @@
-#include <MorseLib.h>
+#include <MorseDecoder.h>
+
+MorseDecoder morse(13, 20);
 
 void setup() {
   Serial.begin(9600);
-  
-  Morse morse(20);
-
-  Serial.print(morse.getWpm());
+  pinMode(13, INPUT_PULLUP);
 }
 
-void loop() { }
+void loop() {          
+  morse.read();
+  Serial.println(morse.getData());
+}

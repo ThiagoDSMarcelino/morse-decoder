@@ -48,7 +48,14 @@ void MorseDecoder::clear()
 
 void MorseDecoder::read()
 {
-    return digitalRead(8);
+    if (_index > 99)
+        this->clear();
+    
+    if (!digitalRead(8))
+    {
+        _data[_index] = '.';
+        _index++;
+    }
 }
 
 char* MorseDecoder::getData()

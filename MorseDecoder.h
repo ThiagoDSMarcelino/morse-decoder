@@ -12,6 +12,7 @@ public:
 	void clear();
 	void read();
 	char* getData();
+	
 private:
 	int _pin;
 	int _index;
@@ -23,7 +24,7 @@ private:
 		'S', 'T', 'U', 'V', 'W', 'X',
 		'Y', 'Z', '0', '1', '2', '3',
 		'4', '5', '6', '7', '8', '9'};
-	char _data[100];
+	static char _data[100];
 };
 
 #endif
