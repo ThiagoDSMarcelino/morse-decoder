@@ -7,16 +7,11 @@
  *  @param wpm
  *      Words per minutes you can click
  */
-MorseDecoder::MorseDecoder(int pin, int wpm)
+MorseDecoder::MorseDecoder(int pin, int wpm = DEFAULT_WPM)
 {
-    if (wpm < 1)
-        throw "Invalid value for words per minute";
-
     _pin = pin;
     _wpm = wpm;
 }
-
-int _index = 0;
 
 /*!
  *  @brief Get the defined words per minute
@@ -33,8 +28,6 @@ int MorseDecoder::getWpm()
  */
 void MorseDecoder::setWpm(int wpm)
 {
-    if (wpm < 1)
-        throw "Invalid value for words per minute";
     _wpm = wpm;
 }
 
@@ -43,22 +36,39 @@ void MorseDecoder::setWpm(int wpm)
  */
 void MorseDecoder::clear()
 {
+    for (int i = 0; i < DATA_LENGTH; i++)
+        _data[i] = '\0';
+    
     _index = 0;
 }
 
 void MorseDecoder::read()
 {
-    if (_index > 99)
+    if (_index > DATA_LENGTH - 1)
         this->clear();
     
-    if (!digitalRead(8))
+    int button = digitalRead(_pin);
+    
+    if (button == PRESSED_BUTTON)
+        _last_action = millis();
+    
+    if (button == PRESSED_BUTTON && millis() - _last_action > 1 * _unit)
     {
+        _last_action = millis();
         _data[_index] = '.';
+        _index++;
+        return;
+    }
+
+    if (button != PRESSED_BUTTON && millis() - _last_action > 7 * _unit)
+    {
+        _last_action = millis();
+        _data[_index] = ' ';
         _index++;
     }
 }
 
-char* MorseDecoder::getData()
+char *MorseDecoder::getData()
 {
     return _data;
 }

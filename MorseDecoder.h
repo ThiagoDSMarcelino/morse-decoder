@@ -3,6 +3,11 @@
 
 #include <Arduino.h>
 
+#define DATA_LENGTH 100
+#define DEFAULT_WPM 50
+#define PRESSED_BUTTON 0
+#define SEGUND
+
 class MorseDecoder
 {
 public:
@@ -14,17 +19,12 @@ public:
 	char* getData();
 	
 private:
+	int _unit = 1000;
+	int _last_action = millis();
 	int _pin;
-	int _index;
 	int _wpm;
-	const char _morse_decoder[36] = {
-		'A', 'B', 'C', 'D', 'E', 'F',
-		'G', 'H', 'I', 'J', 'K', 'L',
-		'M', 'N', 'O', 'P', 'Q', 'R',
-		'S', 'T', 'U', 'V', 'W', 'X',
-		'Y', 'Z', '0', '1', '2', '3',
-		'4', '5', '6', '7', '8', '9'};
-	static char _data[100];
+	int _index = 0;
+	char _data[DATA_LENGTH];
 };
 
 #endif
