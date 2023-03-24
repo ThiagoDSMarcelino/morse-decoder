@@ -19,7 +19,7 @@ public:
 	char* getData();
 	
 private:
-	int _unit = 1000;
+	int _unit = 60/(50*_wpm);
 	int _last_action = millis();
 	int _pin;
 	int _wpm;

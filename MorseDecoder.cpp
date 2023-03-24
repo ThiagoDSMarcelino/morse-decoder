@@ -49,9 +49,7 @@ void MorseDecoder::read()
     
     int button = digitalRead(_pin);
     
-    if (button == PRESSED_BUTTON)
-        _last_action = millis();
-    
+    -
     if (button == PRESSED_BUTTON && millis() - _last_action > 1 * _unit)
     {
         _last_action = millis();
