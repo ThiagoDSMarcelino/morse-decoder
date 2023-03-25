@@ -7,10 +7,12 @@
  *  @param wpm
  *      Words per minutes you can click
  */
-MorseDecoder::MorseDecoder(int pin, int wpm = DEFAULT_WPM)
+MorseDecoder::MorseDecoder(uint8_t pin, int wpm = DEFAULT_WPM)
 {
     _pin = pin;
-    _wpm = wpm;
+    _currentState = digitalRead(_pin);
+    this->setWpm(wpm);
+    this->clear();
 }
 
 /*!
@@ -29,6 +31,7 @@ int MorseDecoder::getWpm()
 void MorseDecoder::setWpm(int wpm)
 {
     _wpm = wpm;
+    _unit = 60.0f / (50.0f * wpm) * 1000;
 }
 
 /*!
@@ -47,23 +50,27 @@ void MorseDecoder::read()
     if (_index > DATA_LENGTH - 1)
         this->clear();
     
-    int button = digitalRead(_pin);
-    
-    -
-    if (button == PRESSED_BUTTON && millis() - _last_action > 1 * _unit)
-    {
-        _last_action = millis();
-        _data[_index] = '.';
-        _index++;
-        return;
-    }
+    bool buttonState = digitalRead(_pin);
 
-    if (button != PRESSED_BUTTON && millis() - _last_action > 7 * _unit)
-    {
-        _last_action = millis();
+    if (buttonState == _currentState)
+        return;
+
+    unsigned long temp = millis();
+    unsigned long now = temp - _last_action;
+    
+    _currentState = buttonState;
+    
+    if (now > 3 * _unit - 1 && buttonState != PRESSED_BUTTON)
+        _data[_index] = '-';
+    else if (now > 1 * _unit - 1 && buttonState != PRESSED_BUTTON)
+        _data[_index] = '.';
+    else if (_index == 0 && buttonState == PRESSED_BUTTON)
+        return;
+    else if (now > 7 * _unit - 1 && buttonState == PRESSED_BUTTON)
         _data[_index] = ' ';
-        _index++;
-    }
+
+    _index++;
+    _last_action = temp;
 }
 
 char *MorseDecoder::getData()

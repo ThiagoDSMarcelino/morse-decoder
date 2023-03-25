@@ -6,12 +6,11 @@
 #define DATA_LENGTH 100
 #define DEFAULT_WPM 50
 #define PRESSED_BUTTON 0
-#define SEGUND
 
 class MorseDecoder
 {
 public:
-	MorseDecoder(int pin, int wpm);
+	MorseDecoder(uint8_t pin, int wpm);
 	int getWpm();
 	void setWpm(int wpm);
 	void clear();
@@ -19,12 +18,13 @@ public:
 	char* getData();
 	
 private:
-	int _unit = 60/(50*_wpm);
-	int _last_action = millis();
-	int _pin;
 	int _wpm;
 	int _index = 0;
+	float _unit;
+	uint8_t _pin;
+	bool _currentState;
 	char _data[DATA_LENGTH];
+	unsigned long _last_action = millis();
 };
 
 #endif
