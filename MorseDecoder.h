@@ -19,12 +19,15 @@ public:
 	
 private:
 	int _wpm;
-	int _index = 0;
+	int _dataIndex = 0;
+	int _wordIndex = 0;
 	float _unit;
 	uint8_t _pin;
 	bool _currentState;
+	char _word[5];
 	char _data[DATA_LENGTH];
 	unsigned long _last_action = millis();
+	void generateWord();
 };
 
 #endif

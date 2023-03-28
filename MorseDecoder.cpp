@@ -50,6 +50,10 @@ void MorseDecoder::read()
     if (_index > DATA_LENGTH - 1)
         this->clear();
     
+    if (_wordIndex > 4)
+    {
+        
+    }
     bool buttonState = digitalRead(_pin);
 
     if (buttonState == _currentState)
@@ -61,19 +65,30 @@ void MorseDecoder::read()
     _currentState = buttonState;
     
     if (now > 3 * _unit - 1 && buttonState != PRESSED_BUTTON)
-        _data[_index] = '-';
+    {
+        _word[_wordIndex] = '-';
+        _wordIndex++;
+    }
     else if (now > 1 * _unit - 1 && buttonState != PRESSED_BUTTON)
-        _data[_index] = '.';
-    else if (_index == 0 && buttonState == PRESSED_BUTTON)
-        return;
+    {
+        _word[_wordIndex] = '.';
+        _wordIndex++;
+    }
     else if (now > 7 * _unit - 1 && buttonState == PRESSED_BUTTON)
-        _data[_index] = ' ';
+    {
+        _data[_wordIndex] = ' ';
+        _wordIndex++;
+    }
 
-    _index++;
     _last_action = temp;
 }
 
 char *MorseDecoder::getData()
 {
     return _data;
+}
+
+void MorseDecoder::generateWord()
+{
+    
 }
