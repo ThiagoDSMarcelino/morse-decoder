@@ -1,4 +1,4 @@
-#include "MorseDecoder.h"
+#include "MorseDecoder.hpp"
 
 /*!
  *  @brief Instantiates a new Morse class
