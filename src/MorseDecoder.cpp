@@ -7,20 +7,12 @@
  *  @param wpm
  *      Words per minutes you can click
  */
-MorseDecoder::MorseDecoder(uint8_t pin, int wpm = DEFAULT_WPM)
+MorseDecoder::MorseDecoder(uint8_t pin, int wpm = 50, bool defaultButton = false)
 {
-    _pin = pin;
-    _currentState = digitalRead(_pin);
-    this->setWpm(wpm);
-    this->clear();
-}
-
-/*!
- *  @brief Get the defined words per minute
- */
-int MorseDecoder::getWpm()
-{
-    return _wpm;
+  _pin = pin;
+  _buttonPressed = !defaultButton;
+  _currentState = digitalRead(_pin);
+  setWpm(wpm);
 }
 
 /*!
@@ -30,8 +22,8 @@ int MorseDecoder::getWpm()
  */
 void MorseDecoder::setWpm(int wpm)
 {
-    _wpm = wpm;
-    _unit = 60.0f / (50.0f * wpm) * 1000;
+  _wpm = wpm;
+  _unit = 60.0f / (50.0f * wpm) * 1000;
 }
 
 /*!
@@ -39,56 +31,65 @@ void MorseDecoder::setWpm(int wpm)
  */
 void MorseDecoder::clear()
 {
-    for (int i = 0; i < DATA_LENGTH; i++)
-        _data[i] = '\0';
-    
-    _index = 0;
+  _data = "";
+  _word = "";
 }
 
+/*!
+ *  @brief Read button
+ */
 void MorseDecoder::read()
 {
-    if (_index > DATA_LENGTH - 1)
-        this->clear();
-    
-    if (_wordIndex > 4)
-    {
-        
-    }
-    bool buttonState = digitalRead(_pin);
+  if (_word.length() == 5)
+  {
+    generateWord();
+  }
 
-    if (buttonState == _currentState)
-        return;
+  bool buttonState = digitalRead(_pin);
+  if (buttonState == _currentState)
+    return;
+  
+  unsigned long temp = millis();
+  unsigned long now = temp - _last_action;
+  _currentState = buttonState;
 
-    unsigned long temp = millis();
-    unsigned long now = temp - _last_action;
-    
-    _currentState = buttonState;
-    
-    if (now > 3 * _unit - 1 && buttonState != PRESSED_BUTTON)
-    {
-        _word[_wordIndex] = '-';
-        _wordIndex++;
-    }
-    else if (now > 1 * _unit - 1 && buttonState != PRESSED_BUTTON)
-    {
-        _word[_wordIndex] = '.';
-        _wordIndex++;
-    }
-    else if (now > 7 * _unit - 1 && buttonState == PRESSED_BUTTON)
-    {
-        _data[_wordIndex] = ' ';
-        _wordIndex++;
-    }
+  if (now > 3 * _unit - 1 && buttonState != _buttonPressed)
+  {
+    _word += '-';
+  }
+  else if (now > 1 * _unit - 1 && buttonState != _buttonPressed)
+  {
+    _word += '.';
+  }
+  else if (now > 7 * _unit - 1 && buttonState == _buttonPressed)
+  {
+    generateWord();
+    _data += ' ';
+  }
 
-    _last_action = temp;
+  _last_action = temp;
 }
 
-char *MorseDecoder::getData()
+/*!
+ *  @brief Get data stored
+ */
+String MorseDecoder::getData()
 {
-    return _data;
+  return _data;
 }
 
 void MorseDecoder::generateWord()
 {
-    
+  for (int i = 0; i < (sizeof(_morse) / sizeof(_morse[0])); i++)
+  {
+    if (_morse[i].compareTo(_word) == 0)
+    {
+      _data += _ascii[i];
+      _word = "";
+      return;
+    }
+  }
+
+  _data += "𖡄";
+  _word = "";
 }

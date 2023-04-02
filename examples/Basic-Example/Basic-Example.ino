@@ -1,21 +1,16 @@
-#include <MorseDecoder.h>
+#include <MorseDecoder.hpp>
 
 #define pin 8
 
-MorseDecoder morse(pin, 1);
+MorseDecoder morse(pin, 1, false);
 
 void setup() {
   Serial.begin(9600);
+  while(!Serial) {}
   pinMode(pin, INPUT_PULLUP);
 }
 
-void loop() {      
-  char *ptr;    
+void loop() {
   morse.read();
-  ptr = morse.getData();
-  for (int i = 0; i < 100; i++)
-  {
-    Serial.print(*(ptr+i)); Serial.print(", "); 
-  }
-  Serial.println("\nFim da linha");
+  Serial.println(morse.getData());
 }
