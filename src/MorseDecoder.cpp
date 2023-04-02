@@ -63,8 +63,8 @@ void MorseDecoder::read()
   }
   else if (now > 7 * _unit - 1 && buttonState == _buttonPressed)
   {
-    generateWord();
     _data += ' ';
+    generateWord();
   }
 
   _last_action = temp;
