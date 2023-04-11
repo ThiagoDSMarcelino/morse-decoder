@@ -1,4 +1,6 @@
 # Morse Coder Decoder
+![GitHub](https://img.shields.io/github/license/ThiagoDSMarcelino/Morse-Coder-Decoder?color=blue)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ThiagoDSMarcelino/Morse-Coder-Decoder)
 
 ## Installation Instructions
 1. [Download the library](https://github.com/ThiagoDSMarcelino/Morse-Coder-Decoder/archive/refs/heads/main.zip)
