@@ -1,4 +1,4 @@
-#include "MorseDecoder.hpp"
+#include "MorseDecoder.h"
 
 /*!
  *  @brief Instantiates a new Morse class
@@ -64,6 +64,10 @@ void MorseDecoder::read()
   else if (now > 7 * _unit - 1 && buttonState == _buttonPressed)
   {
     _data += ' ';
+    generateWord();
+  }
+  else if (now > 3 * _unit - 1 && buttonState == _buttonPressed)
+  {
     generateWord();
   }
 
